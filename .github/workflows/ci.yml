@@ -37,7 +37,8 @@ jobs:
         with:
           python-version: "3.7"
           activate-environment: openfpgaloader
-          
+          miniconda-version: "latest"
+
       - name: Install openfpgaloader
         run: |
           conda install -c litex-hub openfpgaloader

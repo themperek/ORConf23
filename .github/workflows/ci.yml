@@ -40,7 +40,7 @@ jobs:
           
       - name: Install openfpgaloader
         run: |
-          conda install -c litex-hub openfpgaloade
+          conda install -c litex-hub openfpgaloader
 
       - name: python
         run: |

@@ -31,26 +31,41 @@ jobs:
           echo Hello, world!
           uname -a
 
-  build_fw:
+  build-fw:
     runs-on:  ubuntu-latest
-    container: hdlc/conda:f4pga--xc7--a50t
+    container: 
+      image: hdlc/conda:f4pga--xc7--a50t
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v3
 
-      - name: check
-        run: |
-          ls
-          uname -a
-          ls /opt
-          ls ~
-
-
       - name: build
         run: |
-          apt-get install git -y
+          source /usr/local/etc/profile.d/conda.sh
           git clone https://github.com/chipsalliance/f4pga-examples.git
-          cd /f4pga-examples/xc7/
-          TARGET="arty_35" make -C counter_test
+          cd f4pga-examples/xc7/counter_test
+          f4pga -vv build --flow ./flow.json
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: arty_35-bitfile
+          path: |
+            f4pga-examples/xc7/counter_test/build/arty_35/top.bit
+
+  # /__w/ORConf23/ORConf23/f4pga-examples/xc7/counter_test/build/arty_35/top.bit
+
+  artifact-use-build:
+    runs-on: ubuntu-latest
+    needs: [build-fw]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: arty_35-bitfile
+      - run: ls .
+      - run: ls f4pga-examples/xc7/counter_test/build/arty_35/
 
   # emulation:
   #   runs-on: self-hosted

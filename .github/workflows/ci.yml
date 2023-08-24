@@ -31,13 +31,13 @@ jobs:
 
   emulation:
     runs-on: self-hosted
+    env:
+      CONDA: /home/f4pga/opt/f4pga/xc7/conda
     steps:
       - uses: actions/checkout@v3
       - uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: "3.7"
-          activate-environment: openfpgaloader
-          miniconda-version: "latest"
+          activate-environment: xc7
 
       - name: Install openfpgaloader
         run: |

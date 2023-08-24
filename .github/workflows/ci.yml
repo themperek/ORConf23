@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  simulation:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -27,23 +27,45 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: |
+          echo Hello, world!
+          uname -a
 
-  emulation:
-    runs-on: self-hosted
-    env:
-      CONDA: /home/f4pga/opt/f4pga/xc7/conda
+  build_fw:
+    runs-on:  ubuntu-latest
+    container: hdlc/conda:f4pga--xc7--a50t
     steps:
       - uses: actions/checkout@v3
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: xc7
 
-      - name: Install openfpgaloader
+      - name: check
         run: |
-          conda install -c litex-hub openfpgaloader
+          ls
+          uname -a
+          ls /opt
+          ls ~
 
-      - name: python
+
+      - name: build
         run: |
-          python -V
-          which python
+          apt-get install git -y
+          git clone https://github.com/chipsalliance/f4pga-examples.git
+          cd /f4pga-examples/xc7/
+          TARGET="arty_35" make -C counter_test
+
+  # emulation:
+  #   runs-on: self-hosted
+  #   env:
+  #     CONDA: /home/f4pga/opt/f4pga/xc7/conda
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     - name: flash
+  #       run: |
+  #         source $CONDA/etc/profile.d/conda.sh
+  #         conda activate xc7
+  #         openFPGALoader --detect
+
+  #     - name: python
+  #       run: |
+  #         python -V
+  #         which python

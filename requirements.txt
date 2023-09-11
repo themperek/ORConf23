@@ -1,0 +1,7 @@
+cocotb
+cocotb-test
+pytest-xdist 
+parameterized 
+pyvsc
+bitstruct
+-e git+https://github.com/SiLab-Bonn/basil@0fe5a42230227bf42c5f6a4351208c4d6c612208#egg=basil_daq

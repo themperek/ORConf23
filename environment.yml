@@ -1,0 +1,17 @@
+name: tdc-demo
+
+channels:
+  - conda-forge
+
+dependencies:
+  - pip
+  - numpy 
+  - bitarray 
+  - pytest 
+  - pyyaml
+  - iverilog
+  - pyserial
+  
+  # Packages installed from PyPI
+  - pip:
+    - -r requirements.txt

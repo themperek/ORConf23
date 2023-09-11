@@ -1,0 +1,45 @@
+
+transfer_layer:
+  - name  : intf
+    type  : uart_bridge
+    init:
+        port : "COM5"
+        baudrate : 115200
+
+hw_drivers:
+
+  - name      : FIFO
+    type      : bram_fifo
+    interface : intf
+    base_addr : 0x8000
+    base_data_addr: 0x80000000
+
+  - name      : SPI
+    type      : spi
+    interface : intf
+    base_addr : 0x3000
+  
+  - name      : RX
+    type      : tdc_rx
+    interface : intf
+    base_addr : 0x4000
+
+  - name      : TS_RESET
+    type      : pulse_gen
+    interface : intf
+    base_addr : 0x5000
+
+  - name      : SIGNAL_SEQ
+    type      : seq_gen
+    interface : intf
+    base_addr : 0x6000
+
+registers:
+  - name        : CONFIG_REG
+    type        : StdRegister
+    driver      : None
+    size        : 8
+    fields:
+      - name    : EN
+        size    : 1
+        offset  : 0

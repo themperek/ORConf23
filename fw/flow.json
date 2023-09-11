@@ -1,0 +1,22 @@
+{
+    "default_part": "XC7A35TCSG324-1",
+    "values": {
+        "top": "tdc_emu_top"
+    },
+    "dependencies": {
+        "sources": [
+            "tdc_emu_top.v"
+        ],
+        "synth_log": "build/synth.log",
+        "pack_log": "build/pack.log"
+    },
+    "XC7A35TCSG324-1": {
+        "default_target": "bitstream",
+        "dependencies": {
+            "build_dir": "build",
+            "xdc": [
+                "arty.xdc"
+            ]
+        }
+    }
+}

@@ -1,4 +1,4 @@
-name: tdc-demo
+# name: base
 
 channels:
   - conda-forge

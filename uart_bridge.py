@@ -15,7 +15,7 @@ class uart_bridge(TransferLayer):
         super(uart_bridge, self).__init__(conf)
 
     def init(self):
-        self._port = serial.Serial("COM5", 115200, timeout=1)
+        self._port = serial.Serial("/dev/ttyUSB1", 115200, timeout=1)
 
     def close(self):
         self._port.close()

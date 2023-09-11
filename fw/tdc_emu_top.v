@@ -78,7 +78,6 @@ module tdc_emu_top (
     localparam CLK_FREQ = 28571428;
     localparam UART_SPEED = 115200;
 
-    
     wire [31:0] BUS_ADD;
     wire BUS_RD, BUS_WR;
     wire [7:0] BUS_DATA_IN;
@@ -127,7 +126,7 @@ module tdc_emu_top (
         .BUS_WR(BUS_WR),
         .BUS_BYTE_ACCESS(BUS_BYTE_ACCESS),
 
-        .SPI_CLK(RX_DATA_CLK),
+        .SPI_CLK(BUS_CLK),
         .SCLK(SCLK), 
         .SDO(SDO), 
         .SDI(SDI), 

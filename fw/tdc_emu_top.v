@@ -3,14 +3,16 @@
 `include "./uart_bridge/dbg_bridge_fifo.v"
 `include "./uart_bridge/dbg_bridge.v"
 
+`include "../src/basil-daq/basil/firmware/modules/utils/clock_divider.v"
+
 `include "tdc_fw_core.sv"
 `include "../dut/tdc_top.sv"
 
 module tdc_emu_top (
-    input        clk,
+    input  wire      clk,
 
-    input        uart_rxd,
-    output       uart_txd
+    input   wire    uart_rxd,
+    output  wire    uart_txd
 );
 
     wire clk_bufg;
@@ -27,9 +29,9 @@ module tdc_emu_top (
     PLLE2_ADV #(
         .CLKFBOUT_MULT(14),
         .CLKIN1_PERIOD(10.0),
-        .CLKOUT0_DIVIDE(7),
+        .CLKOUT0_DIVIDE(49),
         .CLKOUT0_PHASE(0),
-        .CLKOUT1_DIVIDE(70),
+        .CLKOUT1_DIVIDE(1),
         .CLKOUT1_PHASE(0),
         .CLKOUT2_DIVIDE(1),
         .CLKOUT2_PHASE(0),
@@ -37,7 +39,7 @@ module tdc_emu_top (
         .CLKOUT3_PHASE(0),
         .CLKOUT4_DIVIDE(1),
         .CLKOUT5_PHASE(0),
-        .DIVCLK_DIVIDE(7),
+        .DIVCLK_DIVIDE(1),
         .REF_JITTER1(0.01),
         .STARTUP_WAIT("FALSE")
     ) PLL (
@@ -45,12 +47,13 @@ module tdc_emu_top (
         .CLKIN1  (clk_bufg),
         .CLKFBOUT(clk_pll_fb),
         .CLKOUT0 (clk0_pll),
-        .CLKOUT1 (clk1_pll),
+        .CLKOUT1 (),
         .CLKOUT2 (),
         .CLKOUT3 (),
         .CLKOUT4 (),
         .LOCKED  (pll_locked)
     );
+
 
     wire clock;
     BUFG clk0_pll_buf_inst (
@@ -59,10 +62,20 @@ module tdc_emu_top (
     );
 
     wire RX_DATA_CLK;
-    BUFG clk1_pll_buf_inst (
-        .I(clk1_pll),
-        .O(RX_DATA_CLK)
+    clock_divider #(
+        .DIVISOR(10)
+    ) clock_divisor_rx_data (
+        .CLK(BUS_CLK),
+        .RESET(1'b0),
+        .CE(),
+        .CLOCK(RX_DATA_CLK)
     );
+
+    // wire RX_DATA_CLK;
+    // BUFG clk1_pll_buf_inst (
+    //     .I(clk_div10),
+    //     .O(RX_DATA_CLK)
+    // );
 
     wire reset;
     assign reset = !pll_locked;
@@ -126,9 +139,9 @@ module tdc_emu_top (
         .BUS_WR(BUS_WR),
         .BUS_BYTE_ACCESS(BUS_BYTE_ACCESS),
 
-        .SPI_CLK(BUS_CLK),
+        .SPI_CLK(RX_DATA_CLK),
         .SCLK(SCLK), 
-        .SDO(SDO), 
+        .SDO(SDO),
         .SDI(SDI), 
         .SLD(SLD),
 

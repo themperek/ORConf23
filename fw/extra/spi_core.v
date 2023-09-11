@@ -289,9 +289,8 @@ always @(posedge BUS_CLK)
         CONF_DONE <= 1;
 
 //CG_MOD_pos icg2(.ck_in(SPI_CLK), .enable(SEN), .ck_out(SCLK));
-
-//assign SCLK = SPI_CLK & SEN;
-BUFGCE buf_cg (.I(SPI_CLK), .CE(SEN), .O(SCLK));
+assign SCLK = ~SPI_CLK & SEN;
+//BUFGCE buf_cg (.I(SPI_CLK), .CE(SEN), .O(SCLK));
 
 always @(negedge SPI_CLK)
     SDI <= SDI_MEM & SEN_INT;

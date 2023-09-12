@@ -162,3 +162,5 @@ cython_debug/
 sim_build
 ucis-coverage.xml
 metrics.txt
+report.html
+.vscode/

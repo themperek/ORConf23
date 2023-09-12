@@ -29,7 +29,7 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: coverage-emulation
+          name: simulation-reports
           path: |
             ucis-coverage.xml
             metrics.txt
@@ -86,7 +86,7 @@ jobs:
         run: |
           openFPGALoader -b arty tdc_emu_top.bit
 
-      - name: Rune emulations tests
+      - name: Run emulations tests
         run: |
           EMU=1 py.test --html=test_report.html --self-contained-html test
 

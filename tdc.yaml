@@ -3,7 +3,7 @@ transfer_layer:
   - name  : intf
     type  : uart_bridge
     init:
-        port : "COM5"
+        port : "/dev/ttyUSB1"
         baudrate : 115200
 
 hw_drivers:

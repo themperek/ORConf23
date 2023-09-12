@@ -16,7 +16,7 @@ import vsc
 class cov(object):
     def __init__(self):
         self.with_sample(data=vsc.bit_t(8))
-        self.data_cp = vsc.coverpoint(self.data, bins=dict(a=vsc.bin([0, 60]), b=vsc.bin([60, 255])))
+        self.data_cp = vsc.coverpoint(self.data, bins=dict(a=vsc.bin([1, 10]), b=vsc.bin([60, 255])))
 
 
 class TestTDC(unittest.TestCase):
@@ -62,13 +62,13 @@ class TestTDC(unittest.TestCase):
         while not self.chip["SPI"].is_ready:
             pass
 
-    def test_i2c(self):
+    def test_spi(self):
         ret = self.rw_dut_spi(55)
 
         logging.info(f"SPI:READ {ret}")
         self.assertEqual(ret, 55)
 
-    def test_simple(self):
+    def test_simple_readout(self):
         self.assertEqual(self.chip["RX"].READY, 1)
 
         self.chip["CONFIG_REG"]["EN"] = 1

@@ -88,11 +88,12 @@ jobs:
 
       - name: Rune emulations tests
         run: |
-          EMU=1 py.test -s test
+          EMU=1 py.test --html=test_report.html --self-contained-html test
 
       - uses: actions/upload-artifact@v3
         with:
-          name: coverage-emulation
+          name: emulation-reports
           path: |
             ucis-coverage.xml
             metrics.txt
+            test_report.html

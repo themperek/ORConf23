@@ -61,7 +61,8 @@ jobs:
         with:
           name: build-reports
           path: |
-            fw/build/*.log
+            fw/build/pack.log
+            fw/build/synth.log
             fw/build/*.rpt
 
 
